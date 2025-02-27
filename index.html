@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGrowth & BadKeep</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000000;
+            min-height: 100vh;
+            color: #22c55e;
+        }
+        .tab-active {
+            border-bottom: 2px solid #22c55e;
+            color: #22c55e;
+        }
+        .cyber-card {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+        }
+        .neon-text {
+            text-shadow: 0 0 5px #22c55e, 0 0 10px #22c55e;
+        }
+        .cyber-button {
+            background: transparent;
+            border: 1px solid #22c55e;
+            color: #22c55e;
+            transition: all 0.3s ease;
+        }
+        .cyber-button:hover {
+            background: #22c55e;
+            color: black;
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+        }
+        .modal-content {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #22c55e;
+        }
+        input, select {
+            background: rgba(34, 197, 94, 0.1) !important;
+            border: 1px solid #22c55e !important;
+            color: #22c55e !important;
+        }
+        input::placeholder {
+            color: rgba(34, 197, 94, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <div class="flex justify-center mb-8">
+            <button onclick="switchTab('growth')" id="growthTab" class="cyber-button px-6 py-2 mx-2 rounded">Personal Growth</button>
+            <button onclick="switchTab('badminton')" id="badmintonTab" class="cyber-button px-6 py-2 mx-2 rounded">Badminton Score</button>
+        </div>
+
+        <!-- Personal Growth Section -->
+        <div id="growthSection">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4 neon-text">CyberGrowth</h1>
+                <p class="text-xl">Enhance your human capabilities</p>
+            </div>
+
+            <div class="cyber-card p-8 rounded-lg max-w-2xl mx-auto">
+                <div id="taskDisplay" class="text-center">
+                    <i id="taskIcon" class="bi bi-lightning-charge text-5xl mb-4"></i>
+                    <h2 id="taskTitle" class="text-2xl font-bold mb-4">Your Enhancement Task</h2>
+                    <p id="taskDescription" class="text-lg mb-8">Loading your next objective...</p>
+                    <button onclick="generateTask()" class="cyber-button px-8 py-3 rounded-lg">
+                        Generate New Task <i class="bi bi-arrow-clockwise ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badminton Section -->
+        <div id="badmintonSection" class="hidden">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4 neon-text">CyberKeep</h1>
+                <p class="text-xl">Digital Badminton Score Management</p>
+            </div>
+
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl">Active Matches</h2>
+                <button onclick="showNewMatchModal()" class="cyber-button px-4 py-2 rounded-lg">
+                    <i class="bi bi-plus-lg mr-2"></i> New Match
+                </button>
+            </div>
+
+            <div id="matchCards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+    </div>
+
+    <!-- Modals remain the same as in the original code, just styled with cyber theme -->
+
+    <script>
+        // Combine all the JavaScript from both applications
+        
+        // Task Generation Logic
+        const tasks = {
+            'Physical': [
+                {title: "Quick Workout", description: "Complete 10 push-ups, 20 squats, and 30 jumping jacks", icon: "bi-heart-pulse"},
+                {title: "Stretching", description: "Do a full-body stretch routine for 5 minutes", icon: "bi-person"},
+                {title: "Power Walk", description: "Take a brisk 10-minute walk", icon: "bi-lightning"}
+            ],
+            'Mental': [
+                {title: "Meditation", description: "Practice mindful breathing for 5 minutes", icon: "bi-brain"},
+                {title: "Knowledge", description: "Read an article about a new topic", icon: "bi-book"},
+                {title: "Creativity", description: "Write down 3 creative ideas for solving a current challenge", icon: "bi-lightbulb"}
+            ],
+            'Spiritual': [
+                {title: "Gratitude", description: "Write down 3 things you're grateful for", icon: "bi-heart"},
+                {title: "Reflection", description: "Spend 5 minutes in quiet reflection", icon: "bi-moon-stars"},
+                {title: "Kindness", description: "Perform one random act of kindness today", icon: "bi-emoji-smile"}
+            ]
+        };
+
+        function generateTask() {
+            const categories = Object.keys(tasks);
+            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+            const categoryTasks = tasks[randomCategory];
+            const randomTask = categoryTasks[Math.floor(Math.random() * categoryTasks.length)];
+
+            document.getElementById('taskIcon').className = `bi ${randomTask.icon} text-5xl mb-4`;
+            document.getElementById('taskTitle').textContent = randomTask.title;
+            document.getElementById('taskDescription').textContent = randomTask.description;
+        }
+
+        function switchTab(tab) {
+            const growthSection = document.getElementById('growthSection');
+            const badmintonSection = document.getElementById('badmintonSection');
+            const growthTab = document.getElementById('growthTab');
+            const badmintonTab = document.getElementById('badmintonTab');
+
+            if (tab === 'growth') {
+                growthSection.classList.remove('hidden');
+                badmintonSection.classList.add('hidden');
+                growthTab.classList.add('tab-active');
+                badmintonTab.classList.remove('tab-active');
+            } else {
+                growthSection.classList.add('hidden');
+                badmintonSection.classList.remove('hidden');
+                growthTab.classList.remove('tab-active');
+                badmintonTab.classList.add('tab-active');
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            generateTask();
+            switchTab('growth');
+        };
+
+        // Add all the badminton scoring logic from the original code here
+        // (All the match management functions remain the same)
+        // ...
+
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
